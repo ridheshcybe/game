@@ -1,0 +1,121 @@
+{
+  "id": "site1-warehouse",
+  "title": "Pier 9 Warehouse",
+  "briefing": "A courier handoff went wrong at an abandoned warehouse. Command says the courier went rogue and was neutralised. Your crew has three minutes to erase the scene. Look closely before it burns.",
+  "cleanupDurationSeconds": 180,
+  "preservationSlots": 3,
+  "truthEvents": [
+    { "id": "e1-arrival", "text": "21:40 Courier Mara Voss arrives at the loading dock with the sealed case." },
+    { "id": "e2-swap", "text": "21:55 Agent Kessler swaps the real case for a decoy in the storage room." },
+    { "id": "e3-shooting", "text": "22:10 Voss notices the swap; Kessler shoots her on the loading dock." },
+    { "id": "e4-report", "text": "22:20 Kessler radios command and reports that Voss went rogue." },
+    { "id": "e5-staging", "text": "22:35 Kessler stages a fake firefight and leaves with the real case." }
+  ],
+  "clues": [
+    {
+      "id": "manifest",
+      "name": "Shipping manifest",
+      "description": "Handoff scheduled for 21:40. Courier: M. Voss. Case serial ending -4471.",
+      "location": "Office",
+      "timeIndex": 0,
+      "personId": "voss",
+      "isEssential": false,
+      "hotspot": { "x": 60, "y": 130, "w": 150, "h": 60 }
+    },
+    {
+      "id": "tire-tracks",
+      "name": "Tire tracks",
+      "description": "One set of fresh tracks from a light van, ending at the loading dock.",
+      "location": "Loading dock",
+      "timeIndex": 0,
+      "personId": "voss",
+      "isEssential": false,
+      "hotspot": { "x": 80, "y": 560, "w": 150, "h": 60 }
+    },
+    {
+      "id": "gloves",
+      "name": "Discarded gloves",
+      "description": "Latex gloves stuffed behind a shelf. Standard issue for Kessler's unit.",
+      "location": "Storage room",
+      "timeIndex": 1,
+      "personId": "kessler",
+      "isEssential": false,
+      "hotspot": { "x": 640, "y": 130, "w": 150, "h": 60 }
+    },
+    {
+      "id": "decoy-case",
+      "name": "Decoy case",
+      "description": "Looks like the sealed case, but it is full of paper ballast. Serial ends -0093, not -4471.",
+      "location": "Storage room",
+      "timeIndex": 1,
+      "personId": "kessler",
+      "isEssential": true,
+      "hotspot": { "x": 820, "y": 130, "w": 150, "h": 60 }
+    },
+    {
+      "id": "phone",
+      "name": "Courier's phone",
+      "description": "Unsent message, 22:08: \"Case is wrong. Too light. Calling it in.\"",
+      "location": "Loading dock",
+      "timeIndex": 2,
+      "personId": "voss",
+      "isEssential": false,
+      "hotspot": { "x": 300, "y": 610, "w": 150, "h": 60 }
+    },
+    {
+      "id": "shell-casing",
+      "name": "Single shell casing",
+      "description": "One 9mm casing. The extractor mark matches sidearms issued to Kessler's unit.",
+      "location": "Loading dock",
+      "timeIndex": 2,
+      "personId": "kessler",
+      "isEssential": true,
+      "hotspot": { "x": 520, "y": 560, "w": 150, "h": 60 }
+    },
+    {
+      "id": "radio-log",
+      "name": "Radio log",
+      "description": "22:20, Kessler to command: \"Courier went rogue. Engaged. Situation contained.\"",
+      "location": "Office",
+      "timeIndex": 3,
+      "personId": "kessler",
+      "isEssential": false,
+      "hotspot": { "x": 240, "y": 130, "w": 150, "h": 60 }
+    },
+    {
+      "id": "cigarettes",
+      "name": "Cigarette butts",
+      "description": "Three fresh butts by the radio, all the same brand. Someone waited here a while.",
+      "location": "Office",
+      "timeIndex": 3,
+      "personId": "kessler",
+      "isEssential": false,
+      "hotspot": { "x": 60, "y": 220, "w": 150, "h": 60 }
+    },
+    {
+      "id": "bullet-holes",
+      "name": "Bullet holes",
+      "description": "A spray of holes from one weapon, fired from inside. No return fire, and the dust in the holes is fresher than the blood.",
+      "location": "Main floor",
+      "timeIndex": 4,
+      "personId": "kessler",
+      "isEssential": true,
+      "hotspot": { "x": 400, "y": 320, "w": 170, "h": 70 }
+    },
+    {
+      "id": "boot-prints",
+      "name": "Boot prints",
+      "description": "One set of heavy boot prints leading out the back door, pressed deep as if carrying weight.",
+      "location": "Main floor",
+      "timeIndex": 4,
+      "personId": "kessler",
+      "isEssential": false,
+      "hotspot": { "x": 640, "y": 410, "w": 150, "h": 60 }
+    }
+  ],
+  "cleanupWaves": [
+    { "atSecond": 60, "clueIds": ["manifest", "tire-tracks", "cigarettes"] },
+    { "atSecond": 120, "clueIds": ["gloves", "radio-log", "shell-casing"] },
+    { "atSecond": 170, "clueIds": ["decoy-case", "phone", "bullet-holes", "boot-prints"] }
+  ]
+}

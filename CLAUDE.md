@@ -35,8 +35,19 @@ vite/                 Vite configs (dev / prod), as in the official Phaser templ
 src/main.ts           DOM entry, calls StartGame
 src/game.ts           Phaser game config and scene list
 src/scenes/           Phaser scenes (thin: render + input)
+  Boot.ts               title + Start
+  InvestigationScene.ts hotspots, inspection panel, top bar, cleanup timer
+  TimelineBoardScene.ts placeholder, receives GameState
+  ui.ts                 shared placeholder button helper
 src/core/             pure game logic, no Phaser
-src/data/             JSON game content
+  types.ts              Clue, Site, GameState, ActionResult, Ending
+  state.ts              createGameState, discoverClue, placeOnTimeline, preserveClue,
+                        addSuspicion, tick, upcomingWave
+  scoring.ts            scoreTimeline, evaluateEnding, ENDING_RULES
+  site.ts / ui.ts / gameInfo.ts   JSON validators (built on validate.ts)
+  text.ts               formatText ({placeholders}), formatTime
+  testSite.ts           small fixture site for unit tests
+src/data/             JSON game content (game.json, ui.json, site1.json)
 ```
 
 ## Scripts
@@ -51,3 +62,7 @@ src/data/             JSON game content
 - JSON imported into scenes goes through a validating parser in `src/core/`
   (see `parseGameInfo` in `src/core/gameInfo.ts`) so bad data fails loudly.
 - Register new scenes in `src/game.ts`.
+- `GameState` is immutable. Actions return a new state; ones that can fail return
+  `ActionResult` (`{ ok, state, reason }`). Scenes hold the current state and replace it.
+- Scenes pass `GameState` to each other through `scene.start(key, { state })`.
+- UI strings use `{name}` placeholders, filled with `formatText`.

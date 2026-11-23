@@ -7,8 +7,7 @@ const COLORS = {
     tagline: '#8a8f98',
     button: 0x2f6f4f,
     buttonHover: 0x3f8f66,
-    buttonText: '#ffffff',
-    status: '#c9a227'
+    buttonText: '#ffffff'
 };
 
 export class Boot extends Scene {
@@ -41,14 +40,8 @@ export class Boot extends Scene {
             color: COLORS.buttonText
         }).setOrigin(0.5);
 
-        const status = this.add.text(cx, height * 0.62 + 70, '', {
-            fontFamily: 'monospace',
-            fontSize: '18px',
-            color: COLORS.status
-        }).setOrigin(0.5);
-
         button.on('pointerover', () => button.setFillStyle(COLORS.buttonHover));
         button.on('pointerout', () => button.setFillStyle(COLORS.button));
-        button.on('pointerup', () => status.setText(info.notBuiltMessage));
+        button.on('pointerup', () => this.scene.start('Investigation'));
     }
 }

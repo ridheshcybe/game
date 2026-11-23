@@ -1,0 +1,23 @@
+{
+  "investigation": {
+    "timeLabel": "CLEANUP {time}",
+    "suspicionLabel": "SUSPICION",
+    "slotsLabel": "PRESERVED {used}/{total}",
+    "loggedCount": "Clues logged: {count}/{total}",
+    "locationLabel": "Location: {location}",
+    "logClue": "Log clue",
+    "logged": "Logged",
+    "close": "Close",
+    "openTimeline": "Open Timeline Board",
+    "waveWarning": "CLEANUP WAVE IN {seconds}s: {count} item(s) will burn",
+    "cleanupComplete": "Cleanup complete. The scene is gone.",
+    "burnedTag": "[BURNED]",
+    "loggedTag": "[logged]"
+  },
+  "timelineBoard": {
+    "title": "Timeline Board",
+    "notBuilt": "The timeline board is not built yet.",
+    "loggedCount": "Clues logged: {count}",
+    "back": "Back to scene"
+  }
+}

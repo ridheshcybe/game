@@ -1,5 +1,7 @@
 import { AUTO, Game, Scale, Types } from 'phaser';
 import { Boot } from './scenes/Boot';
+import { InvestigationScene } from './scenes/InvestigationScene';
+import { TimelineBoardScene } from './scenes/TimelineBoardScene';
 
 const config: Types.Core.GameConfig = {
     type: AUTO,
@@ -11,7 +13,7 @@ const config: Types.Core.GameConfig = {
         mode: Scale.FIT,
         autoCenter: Scale.CENTER_BOTH
     },
-    scene: [Boot]
+    scene: [Boot, InvestigationScene, TimelineBoardScene]
 };
 
 const StartGame = (parent: string): Game => {
