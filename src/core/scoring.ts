@@ -1,41 +1,41 @@
 // Plain TypeScript: no Phaser imports allowed in src/core/.
-import type { Ending, GameState, Site } from './types';
-
-export interface EndingRules {
-    /** Suspicion at or above this gets the player caught. */
-    caughtAtSuspicion: number;
-    /** Timeline score (0-100) needed, with all essential clues preserved, to expose the truth. */
-    exposedMinScore: number;
-}
-
-export const ENDING_RULES: EndingRules = {
-    caughtAtSuspicion: 80,
-    exposedMinScore: 70
-};
+import { slotOf } from './state';
+import type { Confidence, Ending, GameState, Rules, Site, SiteResult } from './types';
 
 /**
- * Percent (0-100, rounded) of the site's clue pairs that the timeline orders correctly.
- * Only pairs from different truth events count. A pair is correct when both clues are on
- * the timeline in the true relative order, so missing clues lower the score.
- * Clue ids on the timeline that are not in the site are ignored.
+ * Timeline accuracy, 0-100 (rounded). Every pair of site clues counts. A pair is correct when
+ * both clues are placed and their slots are in the same relative order as their true events
+ * (same event -> same slot, earlier event -> earlier slot). Unplaced clues make their pairs
+ * wrong, so finding and placing everything matters.
  */
 export function scoreTimeline(state: GameState, site: Site): number {
-    const position = new Map(state.timeline.map((id, i) => [id, i]));
+    const clues = site.clues;
+    if (clues.length < 2) {
+        return clues.every((c) => slotOf(state, c.id) === c.timeIndex) ? 100 : 0;
+    }
     let total = 0;
     let correct = 0;
-    for (let i = 0; i < site.clues.length; i++) {
-        for (let j = i + 1; j < site.clues.length; j++) {
-            const a = site.clues[i];
-            const b = site.clues[j];
-            if (a.timeIndex === b.timeIndex) continue;
+    for (let i = 0; i < clues.length; i++) {
+        for (let j = i + 1; j < clues.length; j++) {
             total++;
-            const pa = position.get(a.id);
-            const pb = position.get(b.id);
-            if (pa === undefined || pb === undefined) continue;
-            if (pa < pb === a.timeIndex < b.timeIndex) correct++;
+            const a = clues[i];
+            const b = clues[j];
+            const sa = slotOf(state, a.id);
+            const sb = slotOf(state, b.id);
+            if (sa === undefined || sb === undefined) continue;
+            if (Math.sign(sa - sb) === Math.sign(a.timeIndex - b.timeIndex)) correct++;
         }
     }
-    return total === 0 ? 100 : Math.round((100 * correct) / total);
+    return Math.round((100 * correct) / total);
+}
+
+/** A deliberately vague reading of the timeline score for the player. */
+export function confidenceLevel(state: GameState): Confidence {
+    const score = scoreTimeline(state, state.site);
+    const { mediumFrom, highFrom } = state.rules.confidence;
+    if (score >= highFrom) return 'high';
+    if (score >= mediumFrom) return 'medium';
+    return 'low';
 }
 
 /**
@@ -44,11 +44,35 @@ export function scoreTimeline(state: GameState, site: Site): number {
  * - leaked:  at least one essential clue preserved, but not enough for exposed.
  * - buried:  no essential evidence survived.
  */
-export function evaluateEnding(state: GameState, site: Site, rules: EndingRules = ENDING_RULES): Ending {
+export function evaluateEnding(
+    state: GameState,
+    site: Site,
+    rules: Rules['endings'] = state.rules.endings
+): Ending {
     if (state.suspicion >= rules.caughtAtSuspicion) return 'caught';
     const essential = site.clues.filter((c) => c.isEssential).map((c) => c.id);
     const kept = essential.filter((id) => state.preservedClueIds.includes(id)).length;
     if (kept === essential.length && scoreTimeline(state, site) >= rules.exposedMinScore) return 'exposed';
     if (kept > 0) return 'leaked';
     return 'buried';
+}
+
+/** Everything the results screen and the campaign need from a finished site. */
+export function buildSiteResult(state: GameState): SiteResult {
+    const site = state.site;
+    const ending = evaluateEnding(state, site);
+    const accuracy = scoreTimeline(state, site);
+    const essential = site.clues.filter((c) => c.isEssential).map((c) => c.id);
+    const rep = state.rules.reputation;
+    const bonus = ending === 'caught' ? 0 : Math.floor(accuracy / rep.accuracyBonusPer);
+    return {
+        siteId: site.id,
+        ending,
+        accuracy,
+        savedEssentialIds: essential.filter((id) => state.preservedClueIds.includes(id)),
+        lostEssentialIds: essential.filter((id) => !state.preservedClueIds.includes(id)),
+        finalSuspicion: state.suspicion,
+        suspicionGained: Math.max(0, state.suspicion - state.startingSuspicion),
+        reputationGained: rep.byEnding[ending] + bonus
+    };
 }

@@ -1,14 +1,6 @@
 import { Scene } from 'phaser';
-import gameData from '../data/game.json';
-import { parseGameInfo } from '../core/gameInfo';
-
-const COLORS = {
-    title: '#e8e6e3',
-    tagline: '#8a8f98',
-    button: 0x2f6f4f,
-    buttonHover: 0x3f8f66,
-    buttonText: '#ffffff'
-};
+import { content } from '../content';
+import { COLORS, FONT, GAME_HEIGHT, GAME_WIDTH, TEXT, makeButton } from './ui';
 
 export class Boot extends Scene {
     constructor() {
@@ -16,32 +8,20 @@ export class Boot extends Scene {
     }
 
     create() {
-        const info = parseGameInfo(gameData);
-        const { width, height } = this.scale;
-        const cx = width / 2;
+        const info = content.game;
+        const cx = GAME_WIDTH / 2;
+        this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, COLORS.background).setOrigin(0);
 
-        this.add.text(cx, height * 0.35, info.title, {
-            fontFamily: 'monospace',
-            fontSize: '72px',
-            color: COLORS.title
-        }).setOrigin(0.5);
+        const title = this.add
+            .text(cx, GAME_HEIGHT * 0.35, info.title, { fontFamily: FONT, fontSize: '72px', color: TEXT.normal })
+            .setOrigin(0.5);
+        this.add
+            .text(cx, GAME_HEIGHT * 0.35 + 70, info.tagline, { fontFamily: FONT, fontSize: '22px', color: TEXT.dim })
+            .setOrigin(0.5);
+        makeButton(this, cx, GAME_HEIGHT * 0.62, 220, 64, info.startLabel, () => this.scene.start('MissionSelect'), {
+            fontSize: 28
+        });
 
-        this.add.text(cx, height * 0.35 + 70, info.tagline, {
-            fontFamily: 'monospace',
-            fontSize: '22px',
-            color: COLORS.tagline
-        }).setOrigin(0.5);
-
-        const button = this.add.rectangle(cx, height * 0.62, 220, 64, COLORS.button)
-            .setInteractive({ useHandCursor: true });
-        this.add.text(cx, height * 0.62, info.startLabel, {
-            fontFamily: 'monospace',
-            fontSize: '28px',
-            color: COLORS.buttonText
-        }).setOrigin(0.5);
-
-        button.on('pointerover', () => button.setFillStyle(COLORS.buttonHover));
-        button.on('pointerout', () => button.setFillStyle(COLORS.button));
-        button.on('pointerup', () => this.scene.start('Investigation'));
+        this.tweens.add({ targets: title, alpha: { from: 0, to: 1 }, y: { from: title.y - 20, to: title.y }, duration: 600 });
     }
 }

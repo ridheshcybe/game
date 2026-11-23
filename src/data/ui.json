@@ -1,8 +1,10 @@
 {
-  "investigation": {
+  "hud": {
     "timeLabel": "CLEANUP {time}",
     "suspicionLabel": "SUSPICION",
-    "slotsLabel": "PRESERVED {used}/{total}",
+    "slotsLabel": "PRESERVED {used}/{total}"
+  },
+  "investigation": {
     "loggedCount": "Clues logged: {count}/{total}",
     "locationLabel": "Location: {location}",
     "logClue": "Log clue",
@@ -10,14 +12,49 @@
     "close": "Close",
     "openTimeline": "Open Timeline Board",
     "waveWarning": "CLEANUP WAVE IN {seconds}s: {count} item(s) will burn",
-    "cleanupComplete": "Cleanup complete. The scene is gone.",
     "burnedTag": "[BURNED]",
-    "loggedTag": "[logged]"
+    "loggedTag": "[logged]",
+    "tutorialTitle": "Briefing for new crew",
+    "tutorialBody": "Tap a highlighted spot to inspect it, then Log the clue.\nCleanup waves burn parts of the scene. Watch the warnings.\nOn the Timeline Board, drag logged clues into the order things happened.\nUse the Preserve tab to secretly keep a few items. They will not burn.\nDon't linger, and don't look too interested. The crew is watching.",
+    "tutorialDismiss": "Got it"
   },
-  "timelineBoard": {
-    "title": "Timeline Board",
-    "notBuilt": "The timeline board is not built yet.",
-    "loggedCount": "Clues logged: {count}",
-    "back": "Back to scene"
+  "timeline": {
+    "tabTimeline": "Timeline",
+    "tabPreserve": "Preserve",
+    "trayLabel": "Logged clues: drag into a slot. Drag back here to remove.",
+    "slotLabel": "{n}",
+    "confidenceLabel": "Confidence: {level}",
+    "confidenceLow": "Low",
+    "confidenceMedium": "Medium",
+    "confidenceHigh": "High",
+    "back": "Back to scene",
+    "submit": "Submit report",
+    "slotsLeft": "Slots left: {count}",
+    "preserveHint": "Tap an item to slip it into your bag. Tap again to put it back.",
+    "preserveAction": "tap to preserve",
+    "preservedTag": "PRESERVED",
+    "noSlots": "No slots left. Put something back first.",
+    "emptyPreserve": "Nothing left to save. Log clues before they burn.",
+    "cleanupOver": "Cleanup is over."
+  },
+  "results": {
+    "accuracy": "Timeline accuracy: {percent}%",
+    "savedLabel": "Evidence saved:",
+    "lostLabel": "Evidence lost:",
+    "none": "none",
+    "suspicion": "Suspicion this site: +{gained} (ended at {final})",
+    "reputation": "Reputation: {sign}{value}",
+    "restart": "Restart",
+    "nextSite": "Next site",
+    "campaignSummary": "Campaign summary"
+  },
+  "missionSelect": {
+    "title": "Assignments",
+    "totals": "Reputation {reputation}    Total suspicion {suspicion}",
+    "notAttempted": "Not attempted",
+    "completed": "{ending}, {accuracy}% accuracy",
+    "newCampaign": "New campaign",
+    "campaignComplete": "Campaign ending: {name}",
+    "back": "Title"
   }
 }

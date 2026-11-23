@@ -78,3 +78,23 @@ function parseRect(value: unknown, path: string): Rect {
     if (rect.w <= 0 || rect.h <= 0) throw new Error(`${path} must have positive w and h`);
     return rect;
 }
+
+export interface SiteListEntry {
+    id: string;
+    /** File name of the site JSON inside src/data/, e.g. "site1.json". */
+    file: string;
+}
+
+/** Validates src/data/sites.json: the campaign's sites, in play order. */
+export function parseSiteList(value: unknown): SiteListEntry[] {
+    const raw = obj(value, 'sites');
+    const list = arr(raw.sites, 'sites.sites').map((s, i) => {
+        const path = `sites.sites[${i}]`;
+        const r = obj(s, path);
+        return { id: str(r, 'id', path), file: str(r, 'file', path) };
+    });
+    if (list.length === 0) throw new Error('sites.sites must not be empty');
+    const ids = new Set(list.map((s) => s.id));
+    if (ids.size !== list.length) throw new Error('sites.sites has duplicate ids');
+    return list;
+}

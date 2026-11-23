@@ -1,5 +1,6 @@
-// Small, hand-checkable site used by unit tests. Not game content.
-import type { Clue, Site } from './types';
+// Small, hand-checkable fixtures used by unit tests. Not game content.
+import { createGameState } from './state';
+import type { Clue, GameState, Rules, Site } from './types';
 
 const clue = (id: string, timeIndex: number, isEssential = false): Clue => ({
     id,
@@ -28,4 +29,32 @@ export function makeTestSite(overrides: Partial<Site> = {}): Site {
         ],
         ...overrides
     };
+}
+
+export function makeTestRules(): Rules {
+    return {
+        waveWarningSeconds: 10,
+        endings: { caughtAtSuspicion: 100, exposedMinScore: 70 },
+        confidence: { mediumFrom: 40, highFrom: 75 },
+        suspicion: {
+            lingerSeconds: 10,
+            lingerAmount: 8,
+            earlyPreserveFraction: 0.5,
+            earlyEssentialAmount: 15,
+            freePreservePanelOpens: 2,
+            preservePanelAmount: 5,
+            crewMessages: [
+                { at: 30, text: 'm30' },
+                { at: 60, text: 'm60' },
+                { at: 90, text: 'm90' }
+            ],
+            carryOverFactor: 0.5,
+            maxCarriedSuspicion: 40
+        },
+        reputation: { byEnding: { exposed: 4, leaked: 2, buried: -1, caught: -4 }, accuracyBonusPer: 25 }
+    };
+}
+
+export function makeTestState(startingSuspicion = 0): GameState {
+    return createGameState(makeTestSite(), makeTestRules(), startingSuspicion);
 }

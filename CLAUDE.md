@@ -30,24 +30,32 @@ Stack: Phaser 4, TypeScript, Vite, Vitest.
 
 ```
 index.html            entry page (mounts #game-container)
-public/style.css      page styling
+public/style.css      page styling (full-window, touch-action off on the canvas)
 vite/                 Vite configs (dev / prod), as in the official Phaser template
 src/main.ts           DOM entry, calls StartGame
-src/game.ts           Phaser game config and scene list
+src/game.ts           Phaser game config (1024x768, Scale.FIT) and scene list
+src/content.ts        loads + validates every JSON file once; sites found via sites.json
+src/save.ts           localStorage campaign save, guarded, with in-memory fallback
+src/audio.ts          Web Audio synthesized sounds: click, warning, burn, success
 src/scenes/           Phaser scenes (thin: render + input)
   Boot.ts               title + Start
-  InvestigationScene.ts hotspots, inspection panel, top bar, cleanup timer
-  TimelineBoardScene.ts placeholder, receives GameState
-  ui.ts                 shared placeholder button helper
-src/core/             pure game logic, no Phaser
-  types.ts              Clue, Site, GameState, ActionResult, Ending
-  state.ts              createGameState, discoverClue, placeOnTimeline, preserveClue,
-                        addSuspicion, tick, upcomingWave
-  scoring.ts            scoreTimeline, evaluateEnding, ENDING_RULES
-  site.ts / ui.ts / gameInfo.ts   JSON validators (built on validate.ts)
+  MissionSelectScene.ts site list, campaign totals, final campaign ending
+  InvestigationScene.ts hotspots, inspection panel, waves, tutorial overlay
+  TimelineScene.ts      draggable cards into slots, confidence, Preserve tab
+  ResultsScene.ts       site ending, accuracy, saved/lost evidence, Restart / Next site
+  flow.ts               startSite / endSite / crew-message glue (calls core)
+  ui.ts                 shared widgets: makeButton, TopBar, Toast, makeBlocker
+src/core/             pure game logic, no Phaser, unit tested
+  types.ts              Clue, Site, Rules, GameState, ActionResult, SiteResult, Ending
+  state.ts              createGameState, discoverClue, placeOnTimeline, removeFromTimeline,
+                        preserveClue, unpreserveClue, addSuspicion, tick, inspection and
+                        preserve-panel suspicion, crewMessagesCrossed, upcomingWave
+  scoring.ts            scoreTimeline, confidenceLevel, evaluateEnding, buildSiteResult
+  campaign.ts           records, totals, carry-over, next site, campaign ending, save format
+  site.ts / rules.ts / endings.ts / ui.ts / gameInfo.ts   JSON validators (validate.ts)
   text.ts               formatText ({placeholders}), formatTime
-  testSite.ts           small fixture site for unit tests
-src/data/             JSON game content (game.json, ui.json, site1.json)
+  testSite.ts           small fixture site + rules for unit tests
+src/data/             JSON content: game, ui, rules, endings, sites, site1, site2
 ```
 
 ## Scripts
@@ -64,5 +72,13 @@ src/data/             JSON game content (game.json, ui.json, site1.json)
 - Register new scenes in `src/game.ts`.
 - `GameState` is immutable. Actions return a new state; ones that can fail return
   `ActionResult` (`{ ok, state, reason }`). Scenes hold the current state and replace it.
-- Scenes pass `GameState` to each other through `scene.start(key, { state })`.
+- Scenes pass `GameState` to each other through `scene.start(key, { state })`. Start a site
+  with `startSite` and finish one with `endSite` (scenes/flow.ts), never by hand.
+- `timeline` maps clue id -> slot index (one slot per truth event; slots can hold several clues).
+- Tuning numbers (thresholds, suspicion amounts, reputation) live in `src/data/rules.json`
+  and travel inside `GameState.rules`. Do not hardcode them.
+- Scenes reset every field in `init()` so a restart never sees old state. Use scene-owned
+  tweens, timers and input listeners only (Phaser clears them on shutdown); never add
+  window/document listeners from a scene.
+- `src/content.ts`, `src/save.ts` and `src/audio.ts` are browser glue with no Phaser imports.
 - UI strings use `{name}` placeholders, filled with `formatText`.

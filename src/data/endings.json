@@ -1,0 +1,46 @@
+{
+  "site": {
+    "exposed": {
+      "name": "EXPOSED",
+      "narrative": "The evidence reaches a journalist with a clean chain of events attached. By morning the official story is already falling apart, and nobody on the crew knows who talked."
+    },
+    "leaked": {
+      "name": "LEAKED",
+      "narrative": "Something gets out. It is enough to raise questions, but the story has holes, and the people who wrote the cover-up are already patching them."
+    },
+    "buried": {
+      "name": "BURIED",
+      "narrative": "The scene burns clean. Whatever happened here now only exists in your memory, and memory is not evidence."
+    },
+    "caught": {
+      "name": "CAUGHT",
+      "narrative": "Rook makes the call. Your bag is searched in the van, and the evidence burns with everything else. You will not be on the next job."
+    }
+  },
+  "campaign": [
+    {
+      "id": "whistleblower",
+      "name": "THE WHISTLEBLOWER",
+      "narrative": "Two cover-ups, two leaks the agency cannot explain. The inquiry is public now. Somewhere in the crew is the reason why, and they never found you.",
+      "minReputation": 12,
+      "maxTotalSuspicion": 90
+    },
+    {
+      "id": "marked",
+      "name": "MARKED",
+      "narrative": "The truth got out, but so did your name. Rook stops talking to you. Your next assignment is a one-way trip.",
+      "minReputation": 6
+    },
+    {
+      "id": "under-watch",
+      "name": "UNDER WATCH",
+      "narrative": "Too many questions, too little to show for them. You are moved to a desk job, with a camera pointed at it.",
+      "minTotalSuspicion": 100
+    },
+    {
+      "id": "the-cleaner",
+      "name": "THE CLEANER",
+      "narrative": "The crew trusts you completely. Every scene burned, every story held. You are very good at this job, and that is the problem."
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "id": "site2-safehouse",
+  "title": "Safehouse 4B",
+  "briefing": "A defector under agency protection was taken from a safehouse apartment. The handler blames a compromised courier. Two minutes, two bags. The apartment is already being stripped.",
+  "cleanupDurationSeconds": 120,
+  "preservationSlots": 2,
+  "truthEvents": [
+    { "id": "e1-move-in", "text": "19:00 Handler Dana Reyes moves defector Ilya Marek into the safehouse." },
+    { "id": "e2-camera", "text": "19:45 Reyes blinds the apartment's security camera from inside." },
+    { "id": "e3-door", "text": "20:30 Reyes opens the door for the extraction team with her own keycard." },
+    { "id": "e4-report", "text": "20:50 Reyes files a report blaming a compromised courier." }
+  ],
+  "clues": [
+    {
+      "id": "welcome-note",
+      "name": "Handwritten note",
+      "description": "\"Stay away from the windows. Food in the fridge. - D\" The handwriting is neat and quick.",
+      "location": "Kitchen",
+      "timeIndex": 0,
+      "personId": "reyes",
+      "isEssential": false,
+      "hotspot": { "x": 80, "y": 140, "w": 150, "h": 60 }
+    },
+    {
+      "id": "receipt",
+      "name": "Grocery receipt",
+      "description": "18:40, two dinners, two coffees. Paid in cash at the corner shop.",
+      "location": "Kitchen",
+      "timeIndex": 0,
+      "personId": "marek",
+      "isEssential": false,
+      "hotspot": { "x": 260, "y": 140, "w": 150, "h": 60 }
+    },
+    {
+      "id": "taped-camera",
+      "name": "Taped camera",
+      "description": "Black tape over the lens, applied from inside the room. The feed cut out at 19:45.",
+      "location": "Living room",
+      "timeIndex": 1,
+      "personId": "reyes",
+      "isEssential": false,
+      "hotspot": { "x": 620, "y": 140, "w": 150, "h": 60 }
+    },
+    {
+      "id": "screwdriver",
+      "name": "Small screwdriver",
+      "description": "Left on the bookshelf under the camera. It carries an agency inventory tag signed out to D. Reyes.",
+      "location": "Living room",
+      "timeIndex": 1,
+      "personId": "reyes",
+      "isEssential": false,
+      "hotspot": { "x": 800, "y": 230, "w": 150, "h": 60 }
+    },
+    {
+      "id": "keycard-log",
+      "name": "Door keycard log",
+      "description": "Lock panel memory: OPEN 20:29, card #R-12. Card R-12 belongs to the handler. No forced entry.",
+      "location": "Hallway",
+      "timeIndex": 2,
+      "personId": "reyes",
+      "isEssential": true,
+      "hotspot": { "x": 420, "y": 560, "w": 160, "h": 64 }
+    },
+    {
+      "id": "door-frame",
+      "name": "Door frame",
+      "description": "Paint and wood intact. Whoever came in did not have to break anything.",
+      "location": "Hallway",
+      "timeIndex": 2,
+      "personId": "marek",
+      "isEssential": false,
+      "hotspot": { "x": 620, "y": 600, "w": 150, "h": 60 }
+    },
+    {
+      "id": "laptop-draft",
+      "name": "Laptop draft",
+      "description": "An incident report saved 20:52: \"Breach via compromised courier.\" Written before the courier was ever questioned.",
+      "location": "Bedroom",
+      "timeIndex": 3,
+      "personId": "reyes",
+      "isEssential": true,
+      "hotspot": { "x": 120, "y": 420, "w": 160, "h": 64 }
+    },
+    {
+      "id": "coffee-cups",
+      "name": "Two coffee cups",
+      "description": "One cold, one still warm with a lipstick mark. Someone stayed behind after the door opened.",
+      "location": "Bedroom",
+      "timeIndex": 3,
+      "personId": "reyes",
+      "isEssential": false,
+      "hotspot": { "x": 320, "y": 340, "w": 150, "h": 60 }
+    }
+  ],
+  "cleanupWaves": [
+    { "atSecond": 40, "clueIds": ["receipt", "coffee-cups", "door-frame"] },
+    { "atSecond": 80, "clueIds": ["screwdriver", "keycard-log"] },
+    { "atSecond": 110, "clueIds": ["welcome-note", "taped-camera", "laptop-draft"] }
+  ]
+}

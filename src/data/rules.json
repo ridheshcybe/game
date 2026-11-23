@@ -1,0 +1,30 @@
+{
+  "waveWarningSeconds": 10,
+  "endings": {
+    "caughtAtSuspicion": 100,
+    "exposedMinScore": 70
+  },
+  "confidence": {
+    "mediumFrom": 40,
+    "highFrom": 75
+  },
+  "suspicion": {
+    "lingerSeconds": 10,
+    "lingerAmount": 8,
+    "earlyPreserveFraction": 0.5,
+    "earlyEssentialAmount": 15,
+    "freePreservePanelOpens": 2,
+    "preservePanelAmount": 6,
+    "crewMessages": [
+      { "at": 30, "text": "ROOK: \"You're slow today. Bag it and move.\"" },
+      { "at": 60, "text": "ROOK: \"What are you looking for in there? Hands where I can see them.\"" },
+      { "at": 90, "text": "ROOK: \"One more wrong move and I'm calling it in.\"" }
+    ],
+    "carryOverFactor": 0.25,
+    "maxCarriedSuspicion": 40
+  },
+  "reputation": {
+    "byEnding": { "exposed": 4, "leaked": 2, "buried": -1, "caught": -4 },
+    "accuracyBonusPer": 25
+  }
+}

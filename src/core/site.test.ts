@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import site1 from '../data/site1.json';
-import { parseSite } from './site';
+import { parseSite, parseSiteList } from './site';
 import { makeTestSite } from './testSite';
 
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));
@@ -58,5 +58,13 @@ describe('parseSite', () => {
         const bad = clone(site1);
         bad.clues[0].hotspot.w = 0;
         expect(() => parseSite(bad)).toThrow(/hotspot/);
+    });
+});
+
+describe('parseSiteList', () => {
+    it('accepts a list and rejects empty or duplicate lists', () => {
+        expect(parseSiteList({ sites: [{ id: 'a', file: 'a.json' }] })).toHaveLength(1);
+        expect(() => parseSiteList({ sites: [] })).toThrow(/empty/);
+        expect(() => parseSiteList({ sites: [{ id: 'a', file: 'a.json' }, { id: 'a', file: 'b.json' }] })).toThrow(/duplicate/);
     });
 });

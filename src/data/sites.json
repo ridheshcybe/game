@@ -1,0 +1,6 @@
+{
+  "sites": [
+    { "id": "site1-warehouse", "file": "site1.json" },
+    { "id": "site2-safehouse", "file": "site2.json" }
+  ]
+}
